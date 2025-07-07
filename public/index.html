@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GRAPHIC API</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        body{
+            background-image: linear-gradient(to bottom right, #13097f, #dbedf1);
+        }
+
+        .responsive-img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .typing-text {
+            overflow: hidden; /* Ocultar el exceso de texto */
+            border-right: .15em solid rgb(8, 6, 79); /* Añadir un borde para simular el cursor de tipeo */
+            white-space: nowrap; /* Evitar que el texto se desborde */
+            margin: 0 auto; /* Centrar el texto horizontalmente */
+            letter-spacing: .15em; /* Espacio entre letras */
+        }
+
+        .typing-animation {
+            animation: typing 3s steps(40, end), blink-caret .75s step-end infinite; /* Animación de tipeo y parpadeo del cursor */
+        }
+
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+            to {
+                width: 100%;
+            }
+        }
+
+        /* Animación de parpadeo del cursor */
+        @keyframes blink-caret {
+            from,
+            to {
+                border-color: transparent;
+            }
+            50% {
+                border-color: orange;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 center">
+                <div class="text-center">
+                    <!-- <img src="https://portal.servitemporaleslaborales.com/login/images/servitemporales_logo.png" class="responsive-img"> -->
+                    <h3 class="typing-text text-white mt-5">GRAPHIC API V1</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Función para reiniciar la animación de tipeo
+        function restartTypingAnimation() {
+            const typingText = document.querySelector('.typing-text');
+            typingText.classList.remove('typing-animation');
+            void typingText.offsetWidth; // Trigger reflow para reiniciar la animación
+            typingText.classList.add('typing-animation');
+        }
+
+        // Iniciar la animación después de que se cargue el DOM
+        document.addEventListener('DOMContentLoaded', function() {
+            // Reiniciar la animación de tipeo después de que termine
+            const typingText = document.querySelector('.typing-text');
+            typingText.addEventListener('animationend', function() {
+                restartTypingAnimation();
+            });
+            // Iniciar la animación por primera vez
+            restartTypingAnimation();
+        });
+    </script>
+</body>
+
+</html>
