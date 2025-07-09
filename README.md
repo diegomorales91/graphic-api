@@ -33,17 +33,39 @@ Una API RESTful desarrollada en Node.js para generar gráficos dinámicos como i
 3. **Configurar variables de entorno**
    ```bash
    # Crear archivo .env (opcional)
-   PORT=4000
+   # ó puedes modificar el .env.example con tus variables
    ```
 
 4. **Ejecutar el servidor**
    ```bash
-   npm start
+   npm start ó npm run dev (para desarrollo)
    ```
 
 El servidor estará disponible en `http://127.0.0.1:4000`
 
 ## 📚 Documentación de la API
+
+---
+
+## Documentación Swagger
+
+Puedes generar la documentación Swagger de la API ejecutando el siguiente comando en la raíz del proyecto:
+
+```bash
+node swagger.js
+```
+
+Esto generará el archivo `swagger.json` con toda la documentación de la API.
+
+Luego, puedes visualizar la documentación interactiva accediendo a:
+
+```
+http://localhost:4000/api/documentation
+```
+
+Asegúrate de tener el servidor corriendo (`node app.js` o el comando que uses para iniciar tu API, para Desarollo es `npm run dev`).
+
+--- 
 
 ### Endpoints Disponibles
 
@@ -295,6 +317,97 @@ const response = await fetch('http://127.0.0.1:4000/v1/charts/bar/', {
 
 const imageBlob = await response.blob();
 const imageUrl = URL.createObjectURL(imageBlob);
+```
+
+## Endpoints de Documentos
+
+### 1. Generar PDF con tablas y gráficos
+
+**POST** `/v1/documents/pdf-charts`
+
+Genera un documento PDF que incluye tablas y gráficos combinados.
+
+#### Ejemplo de request:
+```json
+{
+  "title": "Reporte de Ventas Q4 2024",
+  "tables": [
+    {
+      "title": "Resumen de Ventas por Región",
+      "headers": ["Región", "Ventas", "Meta", "% Cumplimiento"],
+      "rows": [
+        {"Región": "Norte", "Ventas": 150000, "Meta": 140000, "% Cumplimiento": "107%"},
+        {"Región": "Sur", "Ventas": 120000, "Meta": 130000, "% Cumplimiento": "92%"}
+      ],
+      "columnWidths": [100, 80, 80, 100],
+      "headerColor": "#eeeeee",
+      "rowColor": "#ffffff",
+      "alternateRowColor": "#f9f9f9"
+    }
+  ],
+  "charts": [
+    {
+      "title": "Evolución de Ventas Mensuales",
+      "type": "line",
+      "data": {
+        "labels": ["Ene", "Feb", "Mar"],
+        "datasets": [
+          {"label": "Ventas 2024", "data": [100, 150, 200]}
+        ]
+      },
+      "width": 500,
+      "height": 300
+    }
+  ],
+  "filename": "reporte-ventas-q4.pdf"
+}
+```
+
+#### Ejemplo de respuesta:
+```json
+{
+  "success": true,
+  "pdfUrl": "http://127.0.0.1:4000/assets/documents/report-1703123456789-123.pdf",
+  "filePath": "/path/to/assets/documents/report-1703123456789-123.pdf",
+  "filename": "report-1703123456789-123.pdf",
+  "timestamp": "2024-01-15T10:30:45.123Z"
+}
+```
+
+---
+
+### 2. Generar reporte flexible con múltiples visualizaciones
+
+**POST** `/v1/documents/flexible-report`
+
+Genera un reporte flexible que puede incluir gráficos de pie, barras, líneas y tablas.
+
+#### Ejemplo de request:
+```json
+{
+  "title": "Reporte Completo de Análisis de Ventas 2024",
+  "description": "Este reporte incluye múltiples visualizaciones para análisis completo de ventas, incluyendo gráficos de pie, barras, líneas y tablas de resumen",
+  "filename": "presupuesto 2026",
+  "charts": [
+    { "type": "pie", "title": "Distribución de Ventas por Región pie", "data": [35, 25, 20, 15, 5], "labels": ["Norte", "Sur", "Este", "Oeste", "Centro"] },
+    { "type": "bar", "title": "Ventas Mensuales por Trimestre", "datasets": [{ "label": "Q1 2024", "data": [120, 150, 180] }, { "label": "Q2 2024", "data": [200, 220, 250] }, { "label": "Q3 2024", "data": [280, 300, 320] }], "labels": ["Enero", "Febrero", "Marzo"] },
+    { "type": "line", "title": "Evolución de Ventas Anual line", "datasets": [{ "label": "Ventas 2023", "data": [100, 120, 140, 160, 180, 200, 220, 240, 260, 280, 300, 320] }, { "label": "Ventas 2024", "data": [150, 180, 210, 240, 270, 300, 330, 360, 390, 420, 450, 480] }], "labels": ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"] },
+    { "type": "table", "title": "Resumen Ejecutivo de Métricas table", "headers": ["Métrica", "Valor Actual", "Meta", "Cumplimiento", "Estado"], "rows": [{ "Métrica": "Ventas Totales", "Valor Actual": "$2,450,000", "Meta": "$2,200,000", "Cumplimiento": "111%", "Estado": "✅ Superado" }, { "Métrica": "Clientes Nuevos", "Valor Actual": "185", "Meta": "150", "Cumplimiento": "123%", "Estado": "✅ Superado" }, { "Métrica": "Satisfacción Cliente", "Valor Actual": "4.7/5", "Meta": "4.5/5", "Cumplimiento": "104%", "Estado": "✅ Superado" }, { "Métrica": "Retención Cliente", "Valor Actual": "92%", "Meta": "90%", "Cumplimiento": "102%", "Estado": "✅ Superado" }, { "Métrica": "Margen de Utilidad", "Valor Actual": "28%", "Meta": "25%", "Cumplimiento": "112%", "Estado": "✅ Superado" }] },
+    { "type": "pie", "title": "Distribución de Productos por Categoría - pie", "data": [40, 30, 20, 10], "labels": ["Tecnología", "Servicios", "Consultoría", "Otros"] },
+    { "type": "bar", "title": "Rendimiento por Equipo de Ventas", "datasets": [{ "label": "Equipo A", "data": [450, 480, 520] }, { "label": "Equipo B", "data": [380, 420, 460] }, { "label": "Equipo C", "data": [320, 350, 380] }], "labels": ["Q1", "Q2", "Q3"] }
+  ]
+}
+```
+
+#### Ejemplo de respuesta:
+```json
+{
+  "success": true,
+  "pdfUrl": "http://127.0.0.1:4000/assets/documents/report-1703123456789-123.pdf",
+  "filePath": "/path/to/assets/documents/report-1703123456789-123.pdf",
+  "filename": "report-1703123456789-123.pdf",
+  "timestamp": "2024-01-15T10:30:45.123Z"
+}
 ```
 
 ## 📖 Documentación Interactiva
