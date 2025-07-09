@@ -41,7 +41,7 @@ Una API RESTful desarrollada en Node.js para generar gráficos dinámicos como i
    npm start ó npm run dev (para desarrollo)
    ```
 
-El servidor estará disponible en `http://127.0.0.1:4000`
+El servidor estará disponible en `http://127.0.0.1:4000` ó `http://localhost:4000`
 
 ## 📚 Documentación de la API
 
@@ -243,24 +243,30 @@ Genera una tabla personalizada con datos estructurados.
 
 ```
 node-api-graficos/
-├── app.js                 # Archivo principal de la aplicación
-├── swagger.js            # Configuración de Swagger
-├── config/
-│   ├── connection.js     # Configuración de base de datos
-│   └── configJwt.js      # Configuración JWT
-├── controllers/
-│   └── graficosController.js  # Controlador de gráficos
-├── middlewares/
-│   └── authMiddleware.js      # Middleware de autenticación
-├── models/
-│   └── graficosModel.js       # Modelo de datos
-├── routes/
-│   └── v1/
-│       └── graficosRoutes.js  # Rutas de gráficos
-├── utils/
-│   └── chartUtils.js          # Utilidades para gráficos
-└── public/
-    └── index.html             # Página de inicio
+  ├── app.js <--------------------- Archivo principal
+  ├── swagger.js
+  ├── swagger.json <--------------- Se genera con 'node swagger.js'
+  ├── package.json
+  ├── package-lock.json
+  ├── README.md
+  ├── .env.example <--------------- Ejemplo variables de entorno
+  ├── assets/
+  ├── public/
+  │   └── index.html
+  ├── config/
+  │   └── connection.js
+  ├── controllers/
+  │   ├── graficosController.js
+  │   └── documentsController.js 
+  ├── models/
+  │   ├── graficosModel.js
+  │   └── documentsModel.js
+  ├── routes/
+  │   └── v1/
+  │       ├── graficosRoutes.js
+  │       └── documentsRoutes.js 
+  └── utils/
+      └── chartUtils.js
 ```
 
 ## 🚀 Casos de Uso
@@ -410,14 +416,8 @@ Genera un reporte flexible que puede incluir gráficos de pie, barras, líneas y
 }
 ```
 
-## 📖 Documentación Interactiva
 
-Accede a la documentación interactiva de la API en:
-```
-http://127.0.0.1:4000/api-docs
-```
-
-## 🤝 Contribuir
+## 🤝 Si quieres contribuir
 
 1. Fork el proyecto
 2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
