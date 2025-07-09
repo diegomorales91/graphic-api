@@ -43,6 +43,7 @@ app.use('/api/documentation', swaggerUI.serve, swaggerUI.setup(swaggerDocumentat
 /* RUTAS PARA LA VERSIÓN 1 DE LA API */
 const v1 = express.Router();
 v1.use('/charts', require('./routes/v1/graficosRoutes'));
+v1.use('/documents', require('./routes/v1/documentsRoutes'));
 app.use('/v1', v1);
 
 /* INICIAR EL SERVIDOR */
