@@ -37,6 +37,7 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/public/index.html');
 });
 
+/* RUTAS ESTÁTICAS */
 app.use('/assets', express.static('assets'));
 app.use('/api/documentation', swaggerUI.serve, swaggerUI.setup(swaggerDocumentation)); 
 
